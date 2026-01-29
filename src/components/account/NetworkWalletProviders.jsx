@@ -20,6 +20,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { green } from '@mui/material/colors';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
+import Notification_component from './notification_component.jsx';
 import './index.css';
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
@@ -67,6 +68,7 @@ const NetworkWalletProviders = ({
   const { loginMetamask, loginWalletConnect } = useWalletConnector();
   const [selectedNetwork, setSelectedNetwork] = useState(null);
   const [selectedWallet, setSelectedWallet] = useState(null);
+  const [showWalletNotification, setShowWalletNotification] = useState(false);
 
   const handleSelectNetwork = (network) => {
     setSelectedNetwork(network);
@@ -120,8 +122,22 @@ const NetworkWalletProviders = ({
   };
 
   useEffect(() => {
-    if (localStorage.getItem('connected')) {
-      connectWallet(localStorage.getItem('wallet'));
+    const connected = localStorage.getItem('connected');
+    console.log('Wallet connection status check:', { 
+      connected, 
+      isConnected: connected && connected !== 'false',
+      willShowNotification: !(connected && connected !== 'false')
+    });
+    
+    if (connected && connected !== 'false') {
+      // connectWallet(localStorage.getItem('wallet'));
+      // here is where i have done changes to make the 
+      // notification work in the console log  you can also see wah tis happening in line 126
+      // and i have made a notification component which is the compnent  
+      setShowWalletNotification(false);
+    } else {
+      // Show notification immediately when wallet is not connected
+      setShowWalletNotification(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -163,6 +179,7 @@ const NetworkWalletProviders = ({
   //end
 
   return (
+    <>
     <Dialog
       open={walletProvidersDialogOpen}
       onClose={handleWalletProvidersDialogToggle}
@@ -233,7 +250,7 @@ const NetworkWalletProviders = ({
         </Stack>
         <Stack direction="row" spacing={2} alignItems="center" mb={2}>
           <Avatar sx={{ width: 24, height: 24, fontSize: '0.9rem' }}>2</Avatar>
-          <Typography sx={{ fontWeight: 500 }}>Choose Wallet</Typography>
+          <Typography sx={{ fontWeight: 500  }}  >Choose Wallet</Typography>
         </Stack>
         <Stack direction="row" spacing={3} alignItems="center" justifyContent="space-evenly">
           {wallets.map((wallet) => (
@@ -267,14 +284,21 @@ const NetworkWalletProviders = ({
       <DialogActions>
         <Button
           fullWidth
-          // onClick={handleConnectWallet}
-          onClick={handleOpen}
+          onClick={handleConnectWallet}
+          // onClick={handleOpen}
           disabled={!selectedNetwork || !selectedWallet}
         >
           Connect
         </Button>
       </DialogActions>
     </Dialog>
+
+    {/* Wallet Notification Component */}
+    <Notification_component 
+      open={showWalletNotification} 
+      onClose={() => setShowWalletNotification(false)}
+    />
+    </>
   );
 };
 

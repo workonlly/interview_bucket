@@ -58,7 +58,7 @@
     "serve": "vite preview",
     "app:pre": "vite",
     "test": "jest",
-    "deploy": "node Truffle/scripts/deployContract.js",
+    "deploy": "node Truffle/scripts/deployContract.cjs",
     "prepare": "npm run app:pre",
     "devchain": "node Truffle/scripts/devChain.js",
     "watch:events": "moralis-admin-cli add-contract",
@@ -67,10 +67,13 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@truffle/hdwallet-provider": "^2.1.15",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitejs/plugin-react-swc": "^4.2.2",
+    "dotenv": "^17.2.3",
     "react-svg-handler": "^1.0.0",
     "rollup-plugin-polyfill-node": "^0.13.0",
+    "truffle": "^5.11.5",
     "vite": "^7.2.2"
   }
 }

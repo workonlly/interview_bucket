@@ -1,10 +1,5 @@
-const ConvertLib = artifacts.require('ConvertLib');
-const MetaCoin = artifacts.require('MetaCoin');
+const ELOToken = artifacts.require('ELOToken');
 
-const deploy = (deployer) => {
-  deployer.deploy(ConvertLib);
-  deployer.link(ConvertLib, MetaCoin);
-  deployer.deploy(MetaCoin);
+module.exports = function (deployer) {
+  deployer.deploy(ELOToken);
 };
-
-export default deploy;
